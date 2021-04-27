@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">VendingMachine</string>
+
+    <string name="penny">Penny</string>
+    <string name="nickel">Nickel</string>
+    <string name="dime">Dime</string>
+    <string name="quarter">Quarter</string>
+
+    <string name="exact_change">Exact Change</string>
+    <string name="return_coins">Return Coins</string>
+
 </resources>
