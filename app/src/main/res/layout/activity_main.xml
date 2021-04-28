@@ -2,8 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".MainActivity">
     <data>
         <import type="android.view.View" />
@@ -16,8 +14,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="MainActivity">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/display"
@@ -36,12 +33,13 @@
             android:textColor="@color/colorPrimary"
             android:textSize="@android:dimen/notification_large_icon_height"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/display" />
 
         <TextView
-            android:layout_width="match_parent"
             android:text="@{viewModel.mCoinAmtText}"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/const_lay"
             app:layout_constraintTop_toBottomOf="@+id/coin_amt" />
@@ -57,6 +55,8 @@
 
             <Button
                 android:id="@+id/cola"
+                android:text="@string/cola"
+                android:onClick="@{() -> viewModel.pressCola()}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toTopOf="@+id/chips"
@@ -64,6 +64,8 @@
 
             <Button
                 android:id="@+id/chips"
+                android:text="@string/chips"
+                android:onClick="@{() -> viewModel.pressChips()}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/candy"
@@ -72,6 +74,8 @@
 
             <Button
                 android:id="@+id/candy"
+                android:text="@string/candy"
+                android:onClick="@{() -> viewModel.pressCandy()}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -85,60 +89,55 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/checkBox"
+            app:layout_constraintBottom_toTopOf="@+id/return_coins"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/const_lay">
 
             <Button
                 android:id="@+id/penny"
+                android:onClick="@{() -> viewModel.insertPenny()}"
+                style="@style/Widget.AppCompat.ButtonBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                style="@style/Widget.AppCompat.ButtonBar"
                 android:text="@string/penny" />
 
             <Button
                 android:id="@+id/dime"
+                android:onClick="@{() -> viewModel.insertDime()}"
+                style="@style/Widget.AppCompat.ButtonBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                style="@style/Widget.AppCompat.ButtonBar"
                 android:text="@string/dime" />
 
             <Button
                 android:id="@+id/nickle"
+                android:onClick="@{() -> viewModel.insertNickle()}"
+                style="@style/Widget.AppCompat.ButtonBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                style="@style/Widget.AppCompat.ButtonBar"
                 android:text="@string/nickel" />
 
             <Button
                 android:id="@+id/quarter"
+                android:onClick="@{() -> viewModel.insertQuarter()}"
+                style="@style/Widget.AppCompat.ButtonBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                style="@style/Widget.AppCompat.ButtonBar"
                 android:text="@string/quarter" />
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/exact_change"
-            app:layout_constraintBottom_toTopOf="@id/return_coins"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout" />
-
         <Button
             android:id="@+id/return_coins"
             android:text="@string/return_coins"
+            android:onClick="@{() -> viewModel.returnCoins()}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            style="@style/Widget.AppCompat.ButtonBar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">VendingMachine</string>
 
+    <string name="cola">Cola</string>
+    <string name="chips">Chips</string>
+    <string name="candy">Candy</string>
+
+
     <string name="penny">Penny</string>
     <string name="nickel">Nickel</string>
     <string name="dime">Dime</string>

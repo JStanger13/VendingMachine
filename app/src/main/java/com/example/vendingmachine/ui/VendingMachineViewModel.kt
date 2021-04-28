@@ -14,14 +14,29 @@ class VendingMachineViewModel: ViewModel() {
     var mDisplayText = ObservableField<String>()
     var mCoinAmtText = ObservableField<String>()
 
-    fun pressCola() = mVendingMachine.selectProduct(Cola())
-    fun pressChips() = mVendingMachine.selectProduct(Chips())
-    fun pressCandy() = mVendingMachine.selectProduct(Candy())
+    init {
+        mDisplayText.set("WELCOME")
+        mCoinAmtText.set("0")
+    }
 
-    fun insertPenny() = mVendingMachine.insertCoin(1)
-    fun insertNickle() = mVendingMachine.insertCoin(5)
-    fun insertDime() = mVendingMachine.insertCoin(10)
-    fun insertQuarter() = mVendingMachine.insertCoin(25)
-    fun returnCoins() = mVendingMachine.returnCoins()
+    //Buttons
+    fun pressCola() {
+        mDisplayText.set(mVendingMachine.pressButton(Cola()))
+        mCoinAmtText.set(mVendingMachine.mCurrentAmount.toString())
+    }
+    fun pressChips() {
+        mDisplayText.set(mVendingMachine.pressButton(Chips()))
+        mCoinAmtText.set(mVendingMachine.mCurrentAmount.toString())
+    }
+    fun pressCandy() {
+        mDisplayText.set(mVendingMachine.pressButton(Candy()))
+        mCoinAmtText.set(mVendingMachine.mCurrentAmount.toString())
+    }
 
+    //Inserting Coins
+    fun insertPenny() = mCoinAmtText.set(mVendingMachine.insertCoin(1))
+    fun insertNickle() = mCoinAmtText.set(mVendingMachine.insertCoin(5))
+    fun insertDime() = mCoinAmtText.set(mVendingMachine.insertCoin(10))
+    fun insertQuarter() = mCoinAmtText.set(mVendingMachine.insertCoin(25))
+    fun returnCoins() = mCoinAmtText.set(mVendingMachine.returnCoins())
 }
