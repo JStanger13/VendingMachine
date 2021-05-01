@@ -1,6 +1,7 @@
 package com.example.vendingmachine
 
-object Display {
+object DisplayConstants {
+    //Display Text Values
     const val INSERT_COIN = "INSERT COIN"
     const val PRICE = "PRICE"
     const val THANK_YOU = "THANK_YOU"
@@ -9,4 +10,9 @@ object Display {
     const val COLA = "COLA"
     const val CHIPS = "CHIPS"
     const val CANDY = "CANDY"
+
+    //Coin Values
+    const val NICKEL = 5
+    const val DIME = 10
+    const val QUARTER = 25
 }

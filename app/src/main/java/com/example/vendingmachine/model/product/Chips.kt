@@ -1,8 +1,8 @@
 package com.example.vendingmachine.model.product
 
-import com.example.vendingmachine.Display
+import com.example.vendingmachine.DisplayConstants
 
-class Chips: Product() {
+class Chips: Product {
     override val price = 50
-    override val type = Display.CHIPS
+    override val type = DisplayConstants.CHIPS
 }

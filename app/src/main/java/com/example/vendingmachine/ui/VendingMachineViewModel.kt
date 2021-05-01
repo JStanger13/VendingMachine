@@ -2,7 +2,10 @@ package com.example.vendingmachine.ui
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
-import com.example.vendingmachine.model.VendingMachine
+import com.example.vendingmachine.DisplayConstants.DIME
+import com.example.vendingmachine.DisplayConstants.NICKEL
+import com.example.vendingmachine.DisplayConstants.QUARTER
+import com.example.vendingmachine.VendingMachine
 import com.example.vendingmachine.model.product.Candy
 import com.example.vendingmachine.model.product.Chips
 import com.example.vendingmachine.model.product.Cola
@@ -15,28 +18,46 @@ class VendingMachineViewModel: ViewModel() {
     var mCoinAmtText = ObservableField<String>()
 
     init {
-        mDisplayText.set("WELCOME")
-        mCoinAmtText.set("0")
+        setUpTexts()
     }
 
     //Buttons
     fun pressCola() {
-        mDisplayText.set(mVendingMachine.pressButton(Cola()))
-        mCoinAmtText.set(mVendingMachine.mCurrentAmount.toString())
+        mVendingMachine.pressButton(Cola())
+        setUpTexts()
     }
     fun pressChips() {
-        mDisplayText.set(mVendingMachine.pressButton(Chips()))
-        mCoinAmtText.set(mVendingMachine.mCurrentAmount.toString())
+        mVendingMachine.pressButton(Chips())
+        setUpTexts()
     }
     fun pressCandy() {
-        mDisplayText.set(mVendingMachine.pressButton(Candy()))
-        mCoinAmtText.set(mVendingMachine.mCurrentAmount.toString())
+        mVendingMachine.pressButton(Candy())
+        setUpTexts()
     }
 
     //Inserting Coins
-    fun insertPenny() = mCoinAmtText.set(mVendingMachine.insertCoin(1))
-    fun insertNickle() = mCoinAmtText.set(mVendingMachine.insertCoin(5))
-    fun insertDime() = mCoinAmtText.set(mVendingMachine.insertCoin(10))
-    fun insertQuarter() = mCoinAmtText.set(mVendingMachine.insertCoin(25))
-    fun returnCoins() = mCoinAmtText.set(mVendingMachine.returnCoins())
+    fun insertPenny() {
+        mVendingMachine.insertCoin(1)
+        setUpTexts()
+    }
+    fun insertNickle() {
+        mVendingMachine.insertCoin(NICKEL)
+        setUpTexts()
+    }
+    fun insertDime() {
+        mVendingMachine.insertCoin(DIME)
+        setUpTexts()
+    }
+    fun insertQuarter() {
+        mVendingMachine.insertCoin(QUARTER)
+        setUpTexts()
+    }
+    fun returnCoins() {
+       mVendingMachine.returnCoins()
+        setUpTexts()
+    }
+    private fun setUpTexts() {
+        mDisplayText.set(mVendingMachine.getDisplay())
+        mCoinAmtText.set(mVendingMachine.getCurrentAmt())
+    }
 }
