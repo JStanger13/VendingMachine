@@ -1,11 +1,13 @@
 package com.example.vendingmachine
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.vendingmachine.databinding.ActivityMainBinding
 import com.example.vendingmachine.ui.VendingMachineViewModel
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var mViewModel: VendingMachineViewModel

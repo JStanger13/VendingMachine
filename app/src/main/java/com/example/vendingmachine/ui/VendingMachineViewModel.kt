@@ -53,7 +53,7 @@ class VendingMachineViewModel: ViewModel() {
         setUpTexts()
     }
     fun returnCoins() {
-       mVendingMachine.returnCoins()
+        mVendingMachine.returnCoins()
         setUpTexts()
     }
     private fun setUpTexts() {
