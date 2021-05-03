@@ -1,8 +1,11 @@
 package com.example.vendingmachine
 
+import com.example.vendingmachine.DisplayConstants.DIME
 import com.example.vendingmachine.DisplayConstants.EXACT_CHANGE_ONLY
 import com.example.vendingmachine.DisplayConstants.INSERT_COIN
+import com.example.vendingmachine.DisplayConstants.NICKEL
 import com.example.vendingmachine.DisplayConstants.PRICE
+import com.example.vendingmachine.DisplayConstants.QUARTER
 import com.example.vendingmachine.DisplayConstants.SOLD_OUT
 import com.example.vendingmachine.DisplayConstants.THANK_YOU
 import com.example.vendingmachine.model.product.Product
@@ -13,49 +16,96 @@ class VendingMachine {
 
     private val mCalculator = WalletCalculator()
     private val mProvider = DispenserProvider()
-    private var mDisplay = INSERT_COIN
+    private var mDisplay = EXACT_CHANGE_ONLY
+    private var mReturnCoins = ""
+    private var mCanMakeChange = false
+    private var mType = ""
+    private var mPrice = 0
 
     fun pressButton(product: Product) {
-        val price = product.price
-        val type = product.type
-        mProvider.selectProduct(type)
-        mCalculator.calculateChange(price)
-        val canMakeChange = mCalculator.canMakeChange(mCalculator.mUserInputAmount - price)
+        mReturnCoins = ""
+        mPrice = product.price
+        mType = product.type
+        mProvider.selectProduct(mType)
+        mCalculator.calculateChange(mPrice)
+        mCanMakeChange = mCalculator.canMakeChange(mCalculator.mUserInputAmount - mPrice)
         val isNotSoldOut = mProvider.getDispenser().getList().isNotEmpty()
-        setMessage(product.price, canMakeChange)
-        if (isNotSoldOut && canMakeChange) {
-            mCalculator.updateCoins(mCalculator.mReturnMap)
-            mProvider.getDispenser().getList().removeAt(0)
-            mCalculator.returnCoins()
+        setMessage()
+        if (isNotSoldOut && mCanMakeChange) {
+            purchaseProduct()
         }
     }
+
+    private fun purchaseProduct() {
+        mCalculator.updateCoins()
+        mProvider.getDispenser().getList().removeAt(0)
+        updateReturnCoinsString()
+    }
+
+    private fun setCanMakeChange() {
+        mCalculator.calculateChange(100)
+        val colaHasChange = mCalculator.canMakeChange(100)
+
+        mCalculator.calculateChange(50)
+        val chipsHasChange = mCalculator.canMakeChange(50)
+
+        mCalculator.calculateChange(65)
+        val candyHasChange = mCalculator.canMakeChange(65)
+
+        mCanMakeChange = colaHasChange && chipsHasChange && candyHasChange
+    }
+
 
     fun getDisplay(): String {
         return mDisplay
     }
 
-    private fun setMessage(price: Int, canMakeChange: Boolean) {
-        mDisplay = if (!mCalculator.hasEnoughMoney(price)) priceDisplay(price)
-        else if (mProvider.getDispenser().getList().isEmpty()) SOLD_OUT
-        else if (canMakeChange) THANK_YOU
-        else EXACT_CHANGE_ONLY
-    }
-
-    private fun priceDisplay(price: Int): String {
-        return PRICE + " $" + String.format("%.2f", (price.toDouble() / 100.00))
-    }
-
     fun insertCoin(coin: Int) {
-        mCalculator.addCoin(coin)
-        mDisplay = INSERT_COIN
+        if (mCalculator.isCoinValid(coin)) mCalculator.insertCoin(coin)
+            resetDisplay()
+            mReturnCoins = ""
+    }
+
+    private fun resetDisplay() {
+        setCanMakeChange()
+        mDisplay = if(mCanMakeChange) INSERT_COIN else EXACT_CHANGE_ONLY
     }
 
     fun returnCoins() {
+        mCalculator.calculateChange(0)
         mCalculator.returnCoins()
         mDisplay = INSERT_COIN
+        updateReturnCoinsString()
     }
 
     fun getCurrentAmt(): String {
-        return mCalculator.mUserInputAmount.toString()
+        return convertCentsToString(mCalculator.mUserInputAmount)
+    }
+
+    fun getReturnText(): String {
+        return mReturnCoins
+    }
+
+    private fun updateReturnCoinsString() {
+        var map = mCalculator.returnCoins()
+        val quarters = map[QUARTER].toString() + " quarters "
+        val dimes = map[DIME].toString() + " dimes "
+        val nickels = map[NICKEL].toString() + " nickels"
+        mReturnCoins = quarters + dimes + nickels
+    }
+
+    private fun setMessage() {
+        mDisplay = if (!mCalculator.hasEnoughMoney(mPrice)) priceDisplay(mPrice)
+        else if (mProvider.getDispenser().getList().isEmpty()) "$SOLD_OUT: $mType"
+        else if (mCanMakeChange) THANK_YOU
+        else EXACT_CHANGE_ONLY
+    }
+
+    private fun convertCentsToString(cents: Int): String {
+        return " $" + String.format("%.2f", (cents.toDouble() / 100.00))
+    }
+
+    private fun priceDisplay(price: Int): String {
+        return PRICE + convertCentsToString(price)
     }
 }

@@ -12,6 +12,7 @@ object DisplayConstants {
     const val CANDY = "CANDY"
 
     //Coin Values
+    const val PENNY = 1
     const val NICKEL = 5
     const val DIME = 10
     const val QUARTER = 25

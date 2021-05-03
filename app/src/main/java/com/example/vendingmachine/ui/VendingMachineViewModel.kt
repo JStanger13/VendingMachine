@@ -5,6 +5,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.example.vendingmachine.DisplayConstants.DIME
 import com.example.vendingmachine.DisplayConstants.NICKEL
+import com.example.vendingmachine.DisplayConstants.PENNY
 import com.example.vendingmachine.DisplayConstants.QUARTER
 import com.example.vendingmachine.R
 import com.example.vendingmachine.VendingMachine
@@ -19,6 +20,7 @@ class VendingMachineViewModel: ViewModel() {
 
     var mDisplayText = ObservableField<String>()
     var mCoinAmtText = ObservableField<String>()
+    var mReturnCoinsText = ObservableField<String>()
     private val mCola = ProductFactory.create<Cola>().get()
     private val mChips = ProductFactory.create<Chips>().get()
     private val mCandy = ProductFactory.create<Candy>().get()
@@ -32,7 +34,8 @@ class VendingMachineViewModel: ViewModel() {
             R.id.cola -> mVendingMachine.pressButton(mCola)
             R.id.chips -> mVendingMachine.pressButton(mChips)
             R.id.candy -> mVendingMachine.pressButton(mCandy)
-            R.id.penny -> mVendingMachine.insertCoin(1)
+
+            R.id.penny -> mVendingMachine.insertCoin(PENNY)
             R.id.nickel -> mVendingMachine.insertCoin(NICKEL)
             R.id.dime -> mVendingMachine.insertCoin(DIME)
             R.id.quarter -> mVendingMachine.insertCoin(QUARTER)
@@ -44,5 +47,6 @@ class VendingMachineViewModel: ViewModel() {
     private fun updateTexts() {
         mDisplayText.set(mVendingMachine.getDisplay())
         mCoinAmtText.set(mVendingMachine.getCurrentAmt())
+        mReturnCoinsText.set(mVendingMachine.getReturnText())
     }
 }

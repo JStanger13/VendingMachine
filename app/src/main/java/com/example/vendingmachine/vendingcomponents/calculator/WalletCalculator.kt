@@ -2,18 +2,19 @@ package com.example.vendingmachine.vendingcomponents.calculator
 
 import com.example.vendingmachine.DisplayConstants.DIME
 import com.example.vendingmachine.DisplayConstants.NICKEL
+import com.example.vendingmachine.DisplayConstants.PENNY
 import com.example.vendingmachine.DisplayConstants.QUARTER
+import java.lang.StrictMath.abs
 
 class WalletCalculator: Wallet() {
 
-    fun returnCoins() {
-        //ToDo Calculate amount given back
+    fun returnCoins(): MutableMap<Int, Int> {
         mUserInputAmount = 0
+        return mReturnMap
     }
 
-    fun addCoin(coin: Int) {
-        mMap[coin] = (mMap[coin] ?: error("")) + 1
-        mUserInputAmount += coin
+    fun insertCoin(coin: Int) {
+        mReturnMap[coin] = (mReturnMap[coin] ?: error("")) + 1
     }
 
     fun calculateChange(price: Int) {
@@ -21,32 +22,40 @@ class WalletCalculator: Wallet() {
             returnCoinAmount(DIME, mMap[DIME]!!,
                 returnCoinAmount(QUARTER,
                     mMap[QUARTER]!!,
-                    mUserInputAmount - price)))
+                    abs(mUserInputAmount - price))))
     }
 
     private fun returnCoinAmount(coinValue: Int, coinAmt: Int, changeAmount: Int): Int {
 
         var newCoinAmt = 0
         if(coinValue <= changeAmount && coinAmt > 0) {
-            newCoinAmt = kotlin.math.floor(changeAmount.toDouble() / coinValue.toDouble()).toInt()
+            newCoinAmt = abs(changeAmount.toDouble() / coinValue.toDouble()).toInt()
         }
         mReturnMap[coinValue] = newCoinAmt
         return changeAmount - (newCoinAmt  * coinValue)
     }
 
-    fun updateCoins(map: MutableMap<Int, Int>) {
-        mMap[NICKEL]!!.minus(map[NICKEL]!!)
-        mMap[DIME]!!.minus(map[DIME]!!)
-        mMap[QUARTER]!!.minus(map[QUARTER]!!)
+    fun updateCoins() {
+        mMap[NICKEL] = (mMap[NICKEL] ?: error("")) + mReturnMap[NICKEL]!!
+        mMap[DIME] = (mMap[DIME] ?: error("")) + mReturnMap[DIME]!!
+        mMap[QUARTER] = (mMap[QUARTER] ?: error("")) + mReturnMap[QUARTER]!!
     }
 
     fun canMakeChange(changeAmount: Int): Boolean {
-        return ((mReturnMap[QUARTER]!! * QUARTER)
-                + (mReturnMap[DIME]!! * DIME)
-                + (mReturnMap[NICKEL]!! * NICKEL)) == changeAmount
+        return ((mMap[QUARTER]!! * QUARTER)
+                + (mMap[DIME]!! * DIME)
+                + (mMap[NICKEL]!! * NICKEL)) >= changeAmount
     }
 
     fun hasEnoughMoney(price: Int): Boolean {
         return mUserInputAmount >= price
+    }
+
+    fun isCoinValid(coin: Int): Boolean {
+        return when(coin) {
+            NICKEL, DIME, QUARTER -> true
+            PENNY -> false
+            else -> throw IllegalArgumentException()
+        }
     }
 }
