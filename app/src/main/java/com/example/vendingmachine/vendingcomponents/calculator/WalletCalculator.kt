@@ -4,7 +4,7 @@ import com.example.vendingmachine.DisplayConstants.DIME
 import com.example.vendingmachine.DisplayConstants.NICKEL
 import com.example.vendingmachine.DisplayConstants.QUARTER
 
-abstract class WalletCalculator: Wallet() {
+class WalletCalculator: Wallet() {
 
     fun returnCoins() {
         //ToDo Calculate amount given back
@@ -38,5 +38,15 @@ abstract class WalletCalculator: Wallet() {
         mMap[NICKEL]!!.minus(map[NICKEL]!!)
         mMap[DIME]!!.minus(map[DIME]!!)
         mMap[QUARTER]!!.minus(map[QUARTER]!!)
+    }
+
+    fun canMakeChange(changeAmount: Int): Boolean {
+        return ((mReturnMap[QUARTER]!! * QUARTER)
+                + (mReturnMap[DIME]!! * DIME)
+                + (mReturnMap[NICKEL]!! * NICKEL)) == changeAmount
+    }
+
+    fun hasEnoughMoney(price: Int): Boolean {
+        return mUserInputAmount >= price
     }
 }

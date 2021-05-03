@@ -43,7 +43,7 @@ class VendingMachineTest {
         assert(mVendingMachine.getDisplay() == SOLD_OUT)
 
         //Candy
-        buyOutProduct(mCandy, NICKEL, 13)
+        buyOutProduct(this.mCandy, NICKEL, 13)
         insertEnoughCoins(NICKEL, 13)
         mVendingMachine.pressButton(mCandy)
         assert(mVendingMachine.getDisplay() == SOLD_OUT)

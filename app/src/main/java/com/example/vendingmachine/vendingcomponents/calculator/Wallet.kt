@@ -20,8 +20,4 @@ abstract class Wallet {
         NICKEL to 0,
         DIME to 0,
         QUARTER to 0)
-
-    var mValueList = arrayListOf(QUARTER, NICKEL, DIME)
-
-
 }

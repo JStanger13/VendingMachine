@@ -55,7 +55,7 @@
             <Button
                 android:id="@+id/cola"
                 android:text="@string/cola"
-                android:onClick="@{() -> viewModel.pressCola()}"
+                android:onClick="@{(v) -> viewModel.pressButton(cola)}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toTopOf="@+id/chips"
@@ -64,7 +64,7 @@
             <Button
                 android:id="@+id/chips"
                 android:text="@string/chips"
-                android:onClick="@{() -> viewModel.pressChips()}"
+                android:onClick="@{(v) -> viewModel.pressButton(chips)}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/candy"
@@ -74,7 +74,7 @@
             <Button
                 android:id="@+id/candy"
                 android:text="@string/candy"
-                android:onClick="@{() -> viewModel.pressCandy()}"
+                android:onClick="@{(v) -> viewModel.pressButton(candy)}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -95,7 +95,7 @@
 
             <Button
                 android:id="@+id/penny"
-                android:onClick="@{() -> viewModel.insertPenny()}"
+                android:onClick="@{(v) -> viewModel.pressButton(penny)}"
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,17 +103,8 @@
                 android:text="@string/penny" />
 
             <Button
-                android:id="@+id/dime"
-                android:onClick="@{() -> viewModel.insertDime()}"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/dime" />
-
-            <Button
-                android:id="@+id/nickle"
-                android:onClick="@{() -> viewModel.insertNickle()}"
+                android:id="@+id/nickel"
+                android:onClick="@{(v) -> viewModel.pressButton(nickel)}"
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -121,8 +112,17 @@
                 android:text="@string/nickel" />
 
             <Button
+                android:id="@+id/dime"
+                android:onClick="@{(v) -> viewModel.pressButton(dime)}"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/dime" />
+
+            <Button
                 android:id="@+id/quarter"
-                android:onClick="@{() -> viewModel.insertQuarter()}"
+                android:onClick="@{(v) -> viewModel.pressButton(quarter)}"
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -132,9 +132,9 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/return_coins"
+            android:id="@+id/returncoins"
             android:text="@string/return_coins"
-            android:onClick="@{() -> viewModel.returnCoins()}"
+            android:onClick="@{(v) -> viewModel.pressButton(returncoins)}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
