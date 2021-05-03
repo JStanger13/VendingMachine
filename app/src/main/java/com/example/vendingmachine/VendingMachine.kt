@@ -11,6 +11,8 @@ import com.example.vendingmachine.DisplayConstants.THANK_YOU
 import com.example.vendingmachine.model.product.Product
 import com.example.vendingmachine.vendingcomponents.calculator.WalletCalculator
 import com.example.vendingmachine.vendingcomponents.dispenser.DispenserProvider
+import java.lang.Math.floor
+import java.lang.StrictMath.abs
 
 class VendingMachine {
 
@@ -32,27 +34,21 @@ class VendingMachine {
         val isNotSoldOut = mProvider.getDispenser().getList().isNotEmpty()
         setMessage()
         if (isNotSoldOut && mCanMakeChange) {
-            purchaseProduct()
+            mCalculator.updateCoins(mCalculator.mReturnMap)
+            mProvider.getDispenser().getList().removeAt(0)
+            updateReturnCoinsString()
         }
-    }
-
-    private fun purchaseProduct() {
-        mCalculator.updateCoins()
-        mProvider.getDispenser().getList().removeAt(0)
-        updateReturnCoinsString()
     }
 
     private fun setCanMakeChange() {
         mCalculator.calculateChange(100)
         val colaHasChange = mCalculator.canMakeChange(100)
-
         mCalculator.calculateChange(50)
-        val chipsHasChange = mCalculator.canMakeChange(50)
-
+        val chipsasChange = mCalculator.canMakeChange(50)
         mCalculator.calculateChange(65)
-        val candyHasChange = mCalculator.canMakeChange(65)
+        val candyasChange = mCalculator.canMakeChange(65)
 
-        mCanMakeChange = colaHasChange && chipsHasChange && candyHasChange
+        mCanMakeChange = colaHasChange && chipsasChange && candyasChange
     }
 
 
@@ -61,7 +57,7 @@ class VendingMachine {
     }
 
     fun insertCoin(coin: Int) {
-        if (mCalculator.isCoinValid(coin)) mCalculator.insertCoin(coin)
+        if (mCalculator.isCoinValid(coin)) mCalculator.addCoin(coin)
             resetDisplay()
             mReturnCoins = ""
     }

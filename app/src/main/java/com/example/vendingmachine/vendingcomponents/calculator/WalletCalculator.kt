@@ -13,8 +13,9 @@ class WalletCalculator: Wallet() {
         return mReturnMap
     }
 
-    fun insertCoin(coin: Int) {
-        mReturnMap[coin] = (mReturnMap[coin] ?: error("")) + 1
+    fun addCoin(coin: Int) {
+        mMap[coin] = (mMap[coin] ?: error("")) + 1
+        mUserInputAmount += coin
     }
 
     fun calculateChange(price: Int) {
@@ -35,10 +36,10 @@ class WalletCalculator: Wallet() {
         return changeAmount - (newCoinAmt  * coinValue)
     }
 
-    fun updateCoins() {
-        mMap[NICKEL] = (mMap[NICKEL] ?: error("")) + mReturnMap[NICKEL]!!
-        mMap[DIME] = (mMap[DIME] ?: error("")) + mReturnMap[DIME]!!
-        mMap[QUARTER] = (mMap[QUARTER] ?: error("")) + mReturnMap[QUARTER]!!
+    fun updateCoins(map: MutableMap<Int, Int>) {
+        mMap[NICKEL]!!.minus(map[NICKEL]!!)
+        mMap[DIME]!!.minus(map[DIME]!!)
+        mMap[QUARTER]!!.minus(map[QUARTER]!!)
     }
 
     fun canMakeChange(changeAmount: Int): Boolean {
