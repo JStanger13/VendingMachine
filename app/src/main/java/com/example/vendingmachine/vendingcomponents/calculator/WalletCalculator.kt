@@ -10,19 +10,19 @@ class WalletCalculator: Wallet() {
 
     fun returnCoins(): MutableMap<Int, Int> {
         mUserInputAmount = 0
-        return mReturnMap
+        return mUserCoins
     }
 
     fun addCoin(coin: Int) {
-        mMap[coin] = (mMap[coin] ?: error("")) + 1
+        mMachineCoins[coin] = (mMachineCoins[coin] ?: error("")) + 1
         mUserInputAmount += coin
     }
 
     fun calculateChange(price: Int) {
-        returnCoinAmount(NICKEL, mMap[NICKEL]!!,
-            returnCoinAmount(DIME, mMap[DIME]!!,
+        returnCoinAmount(NICKEL, mMachineCoins[NICKEL]!!,
+            returnCoinAmount(DIME, mMachineCoins[DIME]!!,
                 returnCoinAmount(QUARTER,
-                    mMap[QUARTER]!!,
+                    mMachineCoins[QUARTER]!!,
                     abs(mUserInputAmount - price))))
     }
 
@@ -32,20 +32,26 @@ class WalletCalculator: Wallet() {
         if(coinValue <= changeAmount && coinAmt > 0) {
             newCoinAmt = abs(changeAmount.toDouble() / coinValue.toDouble()).toInt()
         }
-        mReturnMap[coinValue] = newCoinAmt
+        mUserCoins[coinValue] = newCoinAmt
         return changeAmount - (newCoinAmt  * coinValue)
     }
 
     fun updateCoins(map: MutableMap<Int, Int>) {
-        mMap[NICKEL]!!.minus(map[NICKEL]!!)
-        mMap[DIME]!!.minus(map[DIME]!!)
-        mMap[QUARTER]!!.minus(map[QUARTER]!!)
+        mMachineCoins[NICKEL]!!.minus(map[NICKEL]!!)
+        mMachineCoins[DIME]!!.minus(map[DIME]!!)
+        mMachineCoins[QUARTER]!!.minus(map[QUARTER]!!)
     }
 
     fun canMakeChange(changeAmount: Int): Boolean {
-        return ((mMap[QUARTER]!! * QUARTER)
-                + (mMap[DIME]!! * DIME)
-                + (mMap[NICKEL]!! * NICKEL)) >= changeAmount
+        return ((mUserCoins[QUARTER]!! * QUARTER)
+                + (mUserCoins[DIME]!! * DIME)
+                + (mUserCoins[NICKEL]!! * NICKEL)) == changeAmount
+    }
+
+    fun validateChange(): Boolean {
+        return (mUserCoins[QUARTER]!! <= mMachineCoins[QUARTER]!!)
+                && (mUserCoins[DIME]!! <= mMachineCoins[DIME]!!)
+                && (mUserCoins[NICKEL]!! <= mMachineCoins[NICKEL]!!)
     }
 
     fun hasEnoughMoney(price: Int): Boolean {

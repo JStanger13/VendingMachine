@@ -23,6 +23,7 @@ class VendingMachine {
     private var mCanMakeChange = false
     private var mType = ""
     private var mPrice = 0
+    private var mChangeStateText = EXACT_CHANGE_ONLY
 
     fun pressButton(product: Product) {
         mReturnCoins = ""
@@ -34,23 +35,23 @@ class VendingMachine {
         val isNotSoldOut = mProvider.getDispenser().getList().isNotEmpty()
         setMessage()
         if (isNotSoldOut && mCanMakeChange) {
-            mCalculator.updateCoins(mCalculator.mReturnMap)
+            mCalculator.updateCoins(mCalculator.mUserCoins)
             mProvider.getDispenser().getList().removeAt(0)
             updateReturnCoinsString()
+            resetDisplay()
         }
     }
 
     private fun setCanMakeChange() {
         mCalculator.calculateChange(100)
-        val colaHasChange = mCalculator.canMakeChange(100)
+        val validateChangeForCola = mCalculator.validateChange()
         mCalculator.calculateChange(50)
-        val chipsasChange = mCalculator.canMakeChange(50)
+        val validateChangeForChips = mCalculator.validateChange()
         mCalculator.calculateChange(65)
-        val candyasChange = mCalculator.canMakeChange(65)
+        val validateChangeForCandy = mCalculator.validateChange()
 
-        mCanMakeChange = colaHasChange && chipsasChange && candyasChange
+        mCanMakeChange = validateChangeForCola && validateChangeForChips && validateChangeForCandy
     }
-
 
     fun getDisplay(): String {
         return mDisplay
@@ -58,13 +59,14 @@ class VendingMachine {
 
     fun insertCoin(coin: Int) {
         if (mCalculator.isCoinValid(coin)) mCalculator.addCoin(coin)
-            resetDisplay()
+            mDisplay = mChangeStateText
             mReturnCoins = ""
     }
 
     private fun resetDisplay() {
         setCanMakeChange()
-        mDisplay = if(mCanMakeChange) INSERT_COIN else EXACT_CHANGE_ONLY
+        mChangeStateText = if(mCanMakeChange) INSERT_COIN else EXACT_CHANGE_ONLY
+        mDisplay = mChangeStateText
     }
 
     fun returnCoins() {

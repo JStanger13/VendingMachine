@@ -13,12 +13,12 @@ abstract class Wallet {
     private var mDimes = 0
     private var mQuarters = 0
 
-    var mMap = mutableMapOf(
+    var mMachineCoins = mutableMapOf(
         NICKEL to mNickels,
         DIME to mDimes,
         QUARTER to mQuarters)
 
-    var mReturnMap = mutableMapOf(
+    var mUserCoins = mutableMapOf(
         NICKEL to 0,
         DIME to 0,
         QUARTER to 0)
