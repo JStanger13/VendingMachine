@@ -16,4 +16,9 @@ object DisplayConstants {
     const val NICKEL = 5
     const val DIME = 10
     const val QUARTER = 25
+
+    //Price Values
+    const val COLA_PRICE = 100
+    const val CHIPS_PRICE = 50
+    const val CANDY_PRICE = 65
 }

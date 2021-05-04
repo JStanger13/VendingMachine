@@ -6,12 +6,19 @@ import com.example.vendingmachine.DisplayConstants.PENNY
 import com.example.vendingmachine.DisplayConstants.QUARTER
 
 abstract class Wallet {
-    var mUserInputAmount = 0
+    private var mCurrentAmount = 0
 
     private var mPennies = 0
     private var mNickels = 0
     private var mDimes = 0
     private var mQuarters = 0
+
+    fun getCurrentAmount(): Int {
+        return mCurrentAmount
+    }
+    fun setCurrentAmount(coins: Int) {
+        mCurrentAmount = coins
+    }
 
     var mMachineCoins = mutableMapOf(
         NICKEL to mNickels,

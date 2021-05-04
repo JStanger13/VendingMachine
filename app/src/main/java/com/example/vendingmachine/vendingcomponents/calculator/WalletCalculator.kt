@@ -1,5 +1,8 @@
 package com.example.vendingmachine.vendingcomponents.calculator
 
+import com.example.vendingmachine.DisplayConstants.CANDY_PRICE
+import com.example.vendingmachine.DisplayConstants.CHIPS_PRICE
+import com.example.vendingmachine.DisplayConstants.COLA_PRICE
 import com.example.vendingmachine.DisplayConstants.DIME
 import com.example.vendingmachine.DisplayConstants.NICKEL
 import com.example.vendingmachine.DisplayConstants.PENNY
@@ -9,13 +12,15 @@ import java.lang.StrictMath.abs
 class WalletCalculator: Wallet() {
 
     fun returnCoins(): MutableMap<Int, Int> {
-        mUserInputAmount = 0
+        setCurrentAmount(0)
         return mUserCoins
     }
 
     fun addCoin(coin: Int) {
-        mMachineCoins[coin] = (mMachineCoins[coin] ?: error("")) + 1
-        mUserInputAmount += coin
+        if(isCoinValid(coin)) {
+            mMachineCoins[coin] = (mMachineCoins[coin] ?: error("")) + 1
+            setCurrentAmount(getCurrentAmount() + coin)
+        }
     }
 
     fun calculateChange(price: Int) {
@@ -23,11 +28,10 @@ class WalletCalculator: Wallet() {
             returnCoinAmount(DIME, mMachineCoins[DIME]!!,
                 returnCoinAmount(QUARTER,
                     mMachineCoins[QUARTER]!!,
-                    abs(mUserInputAmount - price))))
+                    abs(getCurrentAmount() - price))))
     }
 
     private fun returnCoinAmount(coinValue: Int, coinAmt: Int, changeAmount: Int): Int {
-
         var newCoinAmt = 0
         if(coinValue <= changeAmount && coinAmt > 0) {
             newCoinAmt = abs(changeAmount.toDouble() / coinValue.toDouble()).toInt()
@@ -42,27 +46,41 @@ class WalletCalculator: Wallet() {
         mMachineCoins[QUARTER]!!.minus(map[QUARTER]!!)
     }
 
-    fun canMakeChange(changeAmount: Int): Boolean {
+    fun userMoneyCanMakeChange(changeAmount: Int): Boolean {
         return ((mUserCoins[QUARTER]!! * QUARTER)
                 + (mUserCoins[DIME]!! * DIME)
                 + (mUserCoins[NICKEL]!! * NICKEL)) == changeAmount
     }
 
-    fun validateChange(): Boolean {
-        return (mUserCoins[QUARTER]!! <= mMachineCoins[QUARTER]!!)
-                && (mUserCoins[DIME]!! <= mMachineCoins[DIME]!!)
-                && (mUserCoins[NICKEL]!! <= mMachineCoins[NICKEL]!!)
-    }
 
     fun hasEnoughMoney(price: Int): Boolean {
-        return mUserInputAmount >= price
+        return getCurrentAmount() >= price
     }
 
-    fun isCoinValid(coin: Int): Boolean {
+    private fun isCoinValid(coin: Int): Boolean {
         return when(coin) {
             NICKEL, DIME, QUARTER -> true
             PENNY -> false
             else -> throw IllegalArgumentException()
         }
+    }
+
+    fun machineMoneyCanMakeChange(): Boolean {
+        val colaHasChange = validateChangeForProduct(COLA_PRICE)
+        val chipsHasChange = validateChangeForProduct(CHIPS_PRICE)
+        val candyHasChange = validateChangeForProduct(CANDY_PRICE)
+
+        return colaHasChange && chipsHasChange && candyHasChange
+    }
+
+    private fun validateChange(): Boolean {
+        return (mUserCoins[QUARTER]!! <= mMachineCoins[QUARTER]!!)
+                && (mUserCoins[DIME]!! <= mMachineCoins[DIME]!!)
+                && (mUserCoins[NICKEL]!! <= mMachineCoins[NICKEL]!!)
+    }
+
+    private fun validateChangeForProduct(price: Int): Boolean {
+        calculateChange(price)
+        return validateChange()
     }
 }

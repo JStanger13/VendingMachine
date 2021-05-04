@@ -6,4 +6,5 @@ interface Dispenser {
     fun restock()
     fun dispense(): Product
     fun getList(): ArrayList<Product>
+    fun isSoldOut(): Boolean
 }

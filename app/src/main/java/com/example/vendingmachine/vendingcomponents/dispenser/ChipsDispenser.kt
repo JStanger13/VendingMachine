@@ -1,6 +1,5 @@
 package com.example.vendingmachine.vendingcomponents.dispenser
 
-import com.example.vendingmachine.model.product.Candy
 import com.example.vendingmachine.model.product.Chips
 import com.example.vendingmachine.model.product.Product
 import com.example.vendingmachine.model.product.factory.ProductFactory
@@ -20,5 +19,9 @@ class ChipsDispenser: Dispenser {
 
     override fun getList(): ArrayList<Product> {
         return mChipsList
+    }
+
+    override fun isSoldOut(): Boolean {
+        return mChipsList.isEmpty()
     }
 }

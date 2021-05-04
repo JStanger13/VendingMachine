@@ -7,7 +7,6 @@ import com.example.vendingmachine.model.product.factory.ProductFactory
 class CandyDispenser: Dispenser {
     private var mCandyList = ArrayList<Product>()
 
-
     override fun restock() {
         for (i in 1..10) {
             mCandyList.add(ProductFactory.create<Candy>().get())
@@ -20,5 +19,9 @@ class CandyDispenser: Dispenser {
 
     override fun getList(): ArrayList<Product> {
         return mCandyList
+    }
+
+    override fun isSoldOut(): Boolean {
+        return mCandyList.isEmpty()
     }
 }
