@@ -31,15 +31,6 @@ class WalletCalculator: Wallet() {
                     abs(getCurrentAmount() - price))))
     }
 
-    private fun returnCoinAmount(coinValue: Int, coinAmt: Int, changeAmount: Int): Int {
-        var newCoinAmt = 0
-        if(coinValue <= changeAmount && coinAmt > 0) {
-            newCoinAmt = abs(changeAmount.toDouble() / coinValue.toDouble()).toInt()
-        }
-        mUserCoins[coinValue] = newCoinAmt
-        return changeAmount - (newCoinAmt  * coinValue)
-    }
-
     fun updateCoins(map: MutableMap<Int, Int>) {
         mMachineCoins[NICKEL]!!.minus(map[NICKEL]!!)
         mMachineCoins[DIME]!!.minus(map[DIME]!!)
@@ -55,14 +46,6 @@ class WalletCalculator: Wallet() {
 
     fun hasEnoughMoney(price: Int): Boolean {
         return getCurrentAmount() >= price
-    }
-
-    private fun isCoinValid(coin: Int): Boolean {
-        return when(coin) {
-            NICKEL, DIME, QUARTER -> true
-            PENNY -> false
-            else -> throw IllegalArgumentException()
-        }
     }
 
     fun machineMoneyCanMakeChange(): Boolean {
@@ -82,5 +65,21 @@ class WalletCalculator: Wallet() {
     private fun validateChangeForProduct(price: Int): Boolean {
         calculateChange(price)
         return validateChange()
+    }
+
+    private fun isCoinValid(coin: Int): Boolean {
+        return when(coin) {
+            NICKEL, DIME, QUARTER -> true
+            PENNY -> false
+            else -> throw IllegalArgumentException()
+        }
+    }
+    private fun returnCoinAmount(coinValue: Int, coinAmt: Int, changeAmount: Int): Int {
+        var newCoinAmt = 0
+        if(coinValue <= changeAmount && coinAmt > 0) {
+            newCoinAmt = abs(changeAmount.toDouble() / coinValue.toDouble()).toInt()
+        }
+        mUserCoins[coinValue] = newCoinAmt
+        return changeAmount - (newCoinAmt  * coinValue)
     }
 }

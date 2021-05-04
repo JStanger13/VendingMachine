@@ -14,6 +14,7 @@ class VendingMachine {
     private var mCanMakeChange = false
 
     init {
+        mDisplay.setExactChangeCheckText()
         mDisplay.setCalculator(mCalculator)
         mDisplay.setProvider(mProvider)
     }

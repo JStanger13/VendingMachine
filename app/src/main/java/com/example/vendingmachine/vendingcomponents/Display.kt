@@ -1,6 +1,7 @@
 package com.example.vendingmachine.vendingcomponents
 
 import com.example.vendingmachine.DisplayConstants
+import com.example.vendingmachine.DisplayConstants.EXACT_CHANGE_ONLY
 import com.example.vendingmachine.model.product.Product
 import com.example.vendingmachine.vendingcomponents.calculator.WalletCalculator
 import com.example.vendingmachine.vendingcomponents.dispenser.DispenserProvider
@@ -9,7 +10,7 @@ class Display {
 
     private var mReturnCoins = ""
     private var mDisplayMessage = ""
-    private var mChangeStateText = DisplayConstants.EXACT_CHANGE_ONLY
+    private var mChangeStateText = EXACT_CHANGE_ONLY
     private lateinit var mCalculator: WalletCalculator
     private lateinit var mProvider: DispenserProvider
 
@@ -52,7 +53,7 @@ class Display {
         mDisplayMessage = if (!mCalculator.hasEnoughMoney(product.price)) priceDisplay(product.price)
         else if (mProvider.getDispenser().getList().isEmpty()) "${DisplayConstants.SOLD_OUT}: ${product.type}"
         else if (canMakeChange) DisplayConstants.THANK_YOU
-        else DisplayConstants.EXACT_CHANGE_ONLY
+        else EXACT_CHANGE_ONLY
     }
 
     fun checkIfExactChangeNeededDisplay() {
